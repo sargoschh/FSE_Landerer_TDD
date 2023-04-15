@@ -143,10 +143,14 @@ Die Verwendung von Mock-Objekten und Mocking-Bibliotheken wie Mockito kann Entwi
 
 ## AUFGABE 6: JUNIT-TESTS FÜR KINOVERWALTUNG
 
-![KinoVerwaltung_01_ok](Bilder/KinoVerwaltung_01_ok.jpg)
+![KinoVerwaltungTest_01_ok](Bilder/KinoVerwaltungTest_01_ok.jpg)
 
 ## AUFGABE 7: JUNIT-TESTS ADVANCED
 
+![AdvancedTest_01_ok](Bilder/AdvancedTest_01_ok.jpg)
+![AdvancedTest_02_ok](Bilder/AdvancedTest_02_ok.jpg)
+![AdvancedTest_03_ok](Bilder/AdvancedTest_03_ok.jpg)
+![AdvancedTest_04_ok](Bilder/AdvancedTest_04_ok.jpg)
 
 ## AUFGABE 8: MOCKITO EINFÜHRUNG
 

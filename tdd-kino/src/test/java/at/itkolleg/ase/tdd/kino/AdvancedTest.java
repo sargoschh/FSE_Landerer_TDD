@@ -63,8 +63,10 @@ public class AdvancedTest {
      */
     @Test
     void testMehrereVorstellungenEinplanen() {
-        assertDoesNotThrow(() -> kinoVerwaltung.einplanenVorstellung(v2), "Das Einplanen von der Vorstellung fuer den Film '" + v2.getFilm() + "' sollte keine Exception werfen.");
-        assertDoesNotThrow(() -> kinoVerwaltung.einplanenVorstellung(v3), "Das Einplanen von der Vorstellung fuer den Film '" + v3.getFilm() + "' sollte keine Exception werfen.");
+        assertDoesNotThrow(() -> kinoVerwaltung.einplanenVorstellung(v2),
+                "Das Einplanen von der Vorstellung fuer den Film '" + v2.getFilm() + "' sollte keine Exception werfen.");
+        assertDoesNotThrow(() -> kinoVerwaltung.einplanenVorstellung(v3),
+                "Das Einplanen von der Vorstellung fuer den Film '" + v3.getFilm() + "' sollte keine Exception werfen.");
     }
 
     /**
@@ -73,9 +75,14 @@ public class AdvancedTest {
      */
     @Test
     void testDoppelteVorstellungEinplanen() {
-        assertThrows(IllegalArgumentException.class, () -> kinoVerwaltung.einplanenVorstellung(v1), "Das Einplanen einer bereits eingeplanten Vorstellung sollte eine Exception werfen.");
+        assertThrows(IllegalArgumentException.class, () -> kinoVerwaltung.einplanenVorstellung(v1),
+                "Das Einplanen einer bereits eingeplanten Vorstellung sollte eine Exception werfen.");
     }
 
+    /**
+     * 4. Schreiben Sie einen parametrisierten Test, der mehrere Ticketkäufe mit
+     * unterschiedlichen Parametern überprüft.
+     */
     private static Stream<Arguments> ticketKaufParameter() {
         return Stream.of(
                 Arguments.of('A', 1, 25.0f),
@@ -85,10 +92,6 @@ public class AdvancedTest {
         );
     }
 
-    /**
-     * 4. Schreiben Sie einen parametrisierten Test, der mehrere Ticketkäufe mit
-     * unterschiedlichen Parametern überprüft.
-     */
     @ParameterizedTest
     @MethodSource("ticketKaufParameter")
     void testKaufeTicketMitVerschiedenenParametern(char reihe, int platz, float geld) {
@@ -106,5 +109,5 @@ public class AdvancedTest {
      * (z.B. new IllegalArgumentException("Nicht ausreichend Geld.")) ausgibt.
      * Die Tests müssen reproduzierbar sein.
      */
-
+    
 }
