@@ -102,37 +102,37 @@ public class App
         System.out.println("Tickets verkaufen");
 
         try {
-            System.out.println(v1.kaufeTicket('G', 10, 20.0f));
+            System.out.println(kinoVerwaltung.kaufeTicket(v1, 'G', 10, 20.0f));
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }
 
         try {
-            System.out.println(v2.kaufeTicket('F', 20, 20.0f));
+            System.out.println(kinoVerwaltung.kaufeTicket(v2, 'F', 20, 20.0f));
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }
 
         try {
-            System.out.println(v3.kaufeTicket('E', 10, 15.0f));
+            System.out.println(kinoVerwaltung.kaufeTicket(v3, 'E', 10, 15.0f));
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }
 
         try {
-            System.out.println(v4.kaufeTicket('C', 25, 15.0f));
+            System.out.println(kinoVerwaltung.kaufeTicket(v4, 'C', 25, 15.0f));
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }
 
         try {
-            System.out.println(v5.kaufeTicket('B', 10, 20.0f));
+            System.out.println(kinoVerwaltung.kaufeTicket(v5, 'B', 10, 20.0f));
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }
 
         try {
-            System.out.println(v6.kaufeTicket('A', 5, 30.0f));
+            System.out.println(kinoVerwaltung.kaufeTicket(v6, 'A', 5, 30.0f));
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }
