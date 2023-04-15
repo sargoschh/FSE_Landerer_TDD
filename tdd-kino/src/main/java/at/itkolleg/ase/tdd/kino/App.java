@@ -55,17 +55,88 @@ public class App
 
         KinoVerwaltung kinoVerwaltung = new KinoVerwaltung();
 
-        kinoVerwaltung.einplanenVorstellung(v1);
-        kinoVerwaltung.einplanenVorstellung(v2);
-        kinoVerwaltung.einplanenVorstellung(v3);
-        kinoVerwaltung.einplanenVorstellung(v4);
-        kinoVerwaltung.einplanenVorstellung(v5);
-        kinoVerwaltung.einplanenVorstellung(v6);
-        kinoVerwaltung.einplanenVorstellung(v6);
+        System.out.println("Vorstellungen einplanen: ");
 
-        /*
-         * Kinosäle anlegen • Vorstellungen anlegen • Vorstellungen über die Kinoverwaltung einplanen • Tickets für Vorstellungen ausgeben
-         */
+        try {
+            kinoVerwaltung.einplanenVorstellung(v1);
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+
+        try {
+            kinoVerwaltung.einplanenVorstellung(v2);
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+
+        try {
+            kinoVerwaltung.einplanenVorstellung(v3);
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+
+        try {
+            kinoVerwaltung.einplanenVorstellung(v4);
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+
+        try {
+            kinoVerwaltung.einplanenVorstellung(v5);
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+
+        try {
+            kinoVerwaltung.einplanenVorstellung(v6);
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+
+        try {
+            kinoVerwaltung.einplanenVorstellung(v6);
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+
+        System.out.println("Tickets verkaufen");
+
+        try {
+            System.out.println(v1.kaufeTicket('G', 10, 20.0f));
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+
+        try {
+            System.out.println(v2.kaufeTicket('F', 20, 20.0f));
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+
+        try {
+            System.out.println(v3.kaufeTicket('E', 10, 15.0f));
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+
+        try {
+            System.out.println(v4.kaufeTicket('C', 25, 15.0f));
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+
+        try {
+            System.out.println(v5.kaufeTicket('B', 10, 20.0f));
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+
+        try {
+            System.out.println(v6.kaufeTicket('A', 5, 30.0f));
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+
 
     }
 }

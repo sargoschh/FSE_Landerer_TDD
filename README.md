@@ -128,3 +128,29 @@ Die Verwendung von Mock-Objekten und Mocking-Bibliotheken wie Mockito kann Entwi
 ![Test_01_ok](Bilder/Test_01_ok.jpg)
 
 ![Main_01_ausgeführt](Bilder/Main_01_ausgef%C3%BChrt.jpg)
+
+## AUFGABE 3: EINARBEITUNG IN DEN GEGEBENEN CODE
+
+![Main_02_ausgeführt](Bilder/Main_02_ausgeführt.jpg)
+
+## AUFGABE 4: JUNIT-TESTS FÜR KINOSAAL
+
+![KinosaalTest_01_ok](Bilder/KinosaalTest_01_ok.jpg)
+
+## AUFGABE 5: JUNIT-TESTS FÜR VORSTELLUNG
+
+
+## AUFGABE 6: JUNIT-TESTS FÜR KINOVERWALTUNG
+
+
+## AUFGABE 7: JUNIT-TESTS ADVANCED
+
+
+## AUFGABE 8: MOCKITO EINFÜHRUNG
+
+
+## AUFGABE 9: SELENIUM EINFÜHRUNG
+
+
+## AUFGABE 10: TDD IST DEAD
+
