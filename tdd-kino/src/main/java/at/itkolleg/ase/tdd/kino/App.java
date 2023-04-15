@@ -1,6 +1,8 @@
 package at.itkolleg.ase.tdd.kino;
 
+import java.time.LocalDate;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -24,7 +26,46 @@ public class App
         System.out.println(ks.pruefePlatz('B',10));
         System.out.println(ks.pruefePlatz('C',14));
 
-        //...
+        Map<Character, Integer> map1 = new HashMap<>();
+        map1.put('A', 20);
+        map1.put('B', 17);
+        map1.put('C', 23);
+        map1.put('D', 15);
+        map1.put('E', 19);
+        map1.put('F', 21);
+        map1.put('G', 18);
+        KinoSaal ks1 = new KinoSaal("Fantasy-Island", map1);
+
+        System.out.println(ks1.pruefePlatz('A', 19));
+        System.out.println(ks1.pruefePlatz('B', 19));
+        System.out.println(ks1.pruefePlatz('C', 19));
+        System.out.println(ks1.pruefePlatz('D', 19));
+        System.out.println(ks1.pruefePlatz('E', 19));
+        System.out.println(ks1.pruefePlatz('F', 19));
+        System.out.println(ks1.pruefePlatz('G', 19));
+
+        LocalDate date1 = LocalDate.now();
+
+        Vorstellung v1 = new Vorstellung(ks1, Zeitfenster.ABEND, date1, "Eragon", 15.99f);
+        Vorstellung v2 = new Vorstellung(ks1, Zeitfenster.NACHMITTAG, date1, "Harry Potter", 15.99f);
+        Vorstellung v3 = new Vorstellung(ks1, Zeitfenster.NACHT, date1, "Herr der Ringe", 15.99f);
+        Vorstellung v4 = new Vorstellung(ks1, Zeitfenster.ABEND, date1, "Super Mario", 15.99f);
+        Vorstellung v5 = new Vorstellung(ks1, Zeitfenster.NACHMITTAG, date1, "Avatar", 15.99f);
+        Vorstellung v6 = new Vorstellung(ks1, Zeitfenster.NACHT, date1, "Avengers", 15.99f);
+
+        KinoVerwaltung kinoVerwaltung = new KinoVerwaltung();
+
+        kinoVerwaltung.einplanenVorstellung(v1);
+        kinoVerwaltung.einplanenVorstellung(v2);
+        kinoVerwaltung.einplanenVorstellung(v3);
+        kinoVerwaltung.einplanenVorstellung(v4);
+        kinoVerwaltung.einplanenVorstellung(v5);
+        kinoVerwaltung.einplanenVorstellung(v6);
+        kinoVerwaltung.einplanenVorstellung(v6);
+
+        /*
+         * Kinosäle anlegen • Vorstellungen anlegen • Vorstellungen über die Kinoverwaltung einplanen • Tickets für Vorstellungen ausgeben
+         */
 
     }
 }
