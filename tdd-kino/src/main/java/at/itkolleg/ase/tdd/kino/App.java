@@ -4,6 +4,7 @@ import java.time.LocalDate;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Random;
 
 /**
  *
@@ -13,6 +14,19 @@ public class App
 {
     public static void main( String[] args )
     {
+
+        /*long seed = 42; // Verwenden Sie einen festen Seed, um die Tests reproduzierbar zu halten
+        Random random = new Random(seed);
+        Random random1 = new Random();
+
+        for(int i = 0; i < 100; i++) {
+            int j = random.nextInt(15) + 1;
+            System.out.println("Mit Seed: " + j);
+            int k = random1.nextInt(15) + 1;
+            System.out.println("Ohne Seed: " + k);
+        }*/
+
+
         //Saal anlegen
         Map<Character,Integer> map = new HashMap<>();
         map.put('A',10);

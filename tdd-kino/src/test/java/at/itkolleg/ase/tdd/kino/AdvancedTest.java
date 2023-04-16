@@ -109,5 +109,53 @@ public class AdvancedTest {
      * (z.B. new IllegalArgumentException("Nicht ausreichend Geld.")) ausgibt.
      * Die Tests müssen reproduzierbar sein.
      */
-    
+    @TestFactory
+    List<DynamicTest> testKaufeTicketMitZufaelligenWerten() {
+        int testAnzahl = 100; // Anzahl der zufälligen Tests
+        long seed = 42; //
+        /*
+         * Wird verwendet, um Random mit einem Seed zu erstellen. Dies ermöglicht es, die mit Random generierten
+         * Zufallswerte reproduzierbar zu machen. Das ist, vor allem mit Tests, die mehrmals ausgeführt werden, wichtig,
+         * da diese konstant sein sollten.
+         */
+        Random random = new Random(seed);
+        List<DynamicTest> dynamicTests = new ArrayList<>(); //Liste mit Tests
+
+        for (int i = 0; i < testAnzahl; i++) { //ForSchleife, die, in diesem Fall, 100-mal durchgeführt werden.
+            char reihe = (char) ('A' + random.nextInt(4)); // Zufällige Reihen: 'A', 'B', 'C', 'D'
+            int platz = random.nextInt(19) + 1; // Zufällige Plätze: 1-20
+            float geld = random.nextFloat() * 20; // Zufällige Geldbeträge: 0.0 - 20.0
+
+            /*
+             * In jedem Schleifendurchlauf wird ein DynamicTest-Objekt erstellt und mit den Testwerten befüllt.
+             * Der erste Parameter des DynamicTests ist der DisplayName, der nach Ablauf des Tests angezeigt und mit
+             * den verwendeten Werten befüllt ist. Anschließend werden in einer Lambda-Expression die eigentlichen
+             * Tests durchgeführt. Im Try-Block wird geprüft, ob das Ticket korrekt erstellt wurde und nicht "null" ist,
+             * ob die Reihe der vorgegebenen entspricht und ob der Platz dem vorgegebenen entspricht. Sollten
+             * Exception auftreten, werden diese in den catch-Blöcken gefangen und auf ihre Korrektheit geprüft.
+             */
+            DynamicTest dynamicTest = DynamicTest.dynamicTest(
+                    "Test Ticketkauf mit Reihe: " + reihe + ", Platz: " + platz + ", Geld: " + geld, () -> {
+
+                        try {
+                            Ticket ticket = kinoVerwaltung.kaufeTicket(v1, reihe, platz, geld);
+                            assertNotNull(ticket, "Das Ticket sollte nicht null sein");
+                            assertEquals(reihe, ticket.getReihe());
+                            assertEquals(platz, ticket.getPlatz());
+                        } catch (IllegalArgumentException e) {
+                            assertTrue(e.getMessage().equals("Nicht ausreichend Geld.")
+                                            || e.getMessage().startsWith("Der Platz "),
+                                    "Unerwartete IllegalArgumentException: " + e.getMessage());
+                        } catch (IllegalStateException e) {
+                            assertTrue(e.getMessage().startsWith("Der Platz "),
+                                    "Unerwartete IllegalStateException: " + e.getMessage());
+                        }
+                    });
+
+            dynamicTests.add(dynamicTest);
+        }
+
+        return dynamicTests;
+    }
+
 }
