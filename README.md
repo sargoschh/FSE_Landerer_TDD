@@ -152,6 +152,70 @@ Die Verwendung von Mock-Objekten und Mocking-Bibliotheken wie Mockito kann Entwi
 ![AdvancedTest_03_ok](Bilder/AdvancedTest_03_ok.jpg)
 ![AdvancedTest_04_ok](Bilder/AdvancedTest_04_ok.jpg)
 
+Die Rückgabetypen, die in den Testmethoden verwendet werden, sind alle Java-Sammlungstypen, die einen Satz von DynamicTest-Objekten enthalten. Jeder Rückgabetyp hat seine eigenen Eigenschaften und Verwendungszwecke:
+
+- ````Iterable<DynamicTest>````: Iterable ist ein Interface, das eine Sammlung repräsentiert, über die iteriert werden kann. Es ist das grundlegende Interface, das von anderen Sammlungstypen wie List und Set implementiert wird. In diesem Fall gibt dynamicTestsWithIterable() eine Liste von DynamicTest-Objekten zurück, die als ````Iterable<DynamicTest>```` behandelt wird. Das bedeutet, dass Sie einfach über die Testobjekte iterieren und sie ausführen können.
+
+- ````Iterator<DynamicTest>````: Iterator ist ein Interface, das eine Möglichkeit bietet, über eine Sammlung von Elementen zu iterieren, ohne die zugrunde liegende Implementierung der Sammlung zu kennen. Im Beispiel dynamicTestsWithIterator() wird eine Liste von DynamicTest-Objekten erstellt und anschließend in einen Iterator konvertiert, bevor sie zurückgegeben wird. Der Hauptunterschied zwischen Iterable und Iterator besteht darin, dass Iterator speziell für das Iterieren über eine Sammlung konzipiert ist und Methoden wie hasNext() und next() enthält, um die Iteration durchzuführen.
+
+- ````Stream<DynamicTest>````: Stream ist eine Sequenz von Elementen, die parallele und sequenzielle Aggregate-Operationen unterstützt. Im Gegensatz zu Iterable und Iterator, die eher für traditionelle Sammlungen konzipiert sind, bietet Stream eine funktionale Programmierweise für die Verarbeitung von Sammlungen. Im Beispiel dynamicTestsFromIntStream() wird ein IntStream verwendet, um geradzahlige Zahlen zu generieren, die anschließend in DynamicTest-Objekte umgewandelt werden. Der resultierende ````Stream<DynamicTest>```` ermöglicht es Ihnen, Funktionen wie map, filter und reduce zu verwenden, um komplexe Testlogiken einfach zu implementieren.
+
+Jeder dieser Rückgabetypen ermöglicht es JUnit, die dynamisch generierten Tests auszuführen. Sie können den für Ihre Anforderungen am besten geeigneten Typ auswählen, abhängig von der Art der Sammlung und den gewünschten Operationen, die Sie darauf ausführen möchten.
+
+````java
+@TestFactory
+    List<DynamicTest> testKaufeTicketMitZufaelligenWerten() {
+        int testAnzahl = 100; // Anzahl der zufälligen Tests
+        long seed = 42; //
+        /*
+         * Wird verwendet, um Random mit einem Seed zu erstellen. Dies ermöglicht es, die mit Random generierten
+         * Zufallswerte reproduzierbar zu machen. Das ist, vor allem mit Tests, die mehrmals ausgeführt werden, wichtig,
+         * da diese konstant sein sollten.
+         */
+        Random random = new Random(seed);
+        List<DynamicTest> dynamicTests = new ArrayList<>(); //Liste mit Tests
+
+        for (int i = 0; i < testAnzahl; i++) { //ForSchleife, die, in diesem Fall, 100-mal durchgeführt werden.
+            char reihe = (char) ('A' + random.nextInt(4)); // Zufällige Reihen: 'A', 'B', 'C', 'D'
+            int platz = random.nextInt(19) + 1; // Zufällige Plätze: 1-20
+            float geld = random.nextFloat() * 20; // Zufällige Geldbeträge: 0.0 - 20.0
+
+            /*
+             * In jedem Schleifendurchlauf wird ein DynamicTest-Objekt erstellt und mit den Testwerten befüllt.
+             * Der erste Parameter des DynamicTests ist der DisplayName, der nach Ablauf des Tests angezeigt und mit
+             * den verwendeten Werten befüllt ist. Anschließend werden in einer Lambda-Expression die eigentlichen
+             * Tests durchgeführt. Im Try-Block wird geprüft, ob das Ticket korrekt erstellt wurde und nicht "null" ist,
+             * ob die Reihe der vorgegebenen entspricht und ob der Platz dem vorgegebenen entspricht. Sollten
+             * Exception auftreten, werden diese in den catch-Blöcken gefangen und auf ihre Korrektheit geprüft.
+             */
+            DynamicTest dynamicTest = DynamicTest.dynamicTest(
+                    "Test Ticketkauf mit Reihe: " + reihe + ", Platz: " + platz + ", Geld: " + geld, () -> {
+
+                        try {
+                            Ticket ticket = kinoVerwaltung.kaufeTicket(v1, reihe, platz, geld);
+                            assertNotNull(ticket, "Das Ticket sollte nicht null sein");
+                            assertEquals(reihe, ticket.getReihe());
+                            assertEquals(platz, ticket.getPlatz());
+                        } catch (IllegalArgumentException e) {
+                            assertTrue(e.getMessage().equals("Nicht ausreichend Geld.")
+                                            || e.getMessage().startsWith("Der Platz "),
+                                    "Unerwartete IllegalArgumentException: " + e.getMessage());
+                        } catch (IllegalStateException e) {
+                            assertTrue(e.getMessage().startsWith("Der Platz "),
+                                    "Unerwartete IllegalStateException: " + e.getMessage());
+                        }
+                    });
+
+            dynamicTests.add(dynamicTest);
+        }
+
+        return dynamicTests;
+    }
+````
+
+
+![AdvancedTest_05_ok](Bilder/AdvancedTest_05_ok.jpg)
+
 ## AUFGABE 8: MOCKITO EINFÜHRUNG
 
 
