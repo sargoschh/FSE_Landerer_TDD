@@ -55,8 +55,9 @@ public class MockTest {
 
     @Test
     void testKinoVerwaltung() {
-        Mockito.when(kinoVerwaltungMock.getVorstellungen().get(0)).thenReturn(vorstellungMock);
-        assertEquals(vorstellungMock, kinoVerwaltungMock.getVorstellungen().get(0));
+        assertThrows(IndexOutOfBoundsException.class, () -> kinoVerwaltungMock.getVorstellungen().get(0));
+
+        assertEquals(0, kinoVerwaltungMock.getVorstellungen().size());
 
         Mockito.when(kinoVerwaltungMock.kaufeTicket(vorstellungMock, 'A', 15, 20.0f)).thenReturn(ticket);
         assertEquals(ticket, kinoVerwaltungMock.kaufeTicket(vorstellungMock, 'A', 15, 20.0f));

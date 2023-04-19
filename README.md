@@ -218,9 +218,128 @@ Jeder dieser Rückgabetypen ermöglicht es JUnit, die dynamisch generierten Test
 
 ## AUFGABE 8: MOCKITO EINFÜHRUNG
 
+![Mochtest_01_ok](Bilder/Mocktest_01_ok.jpg)
+
+![Mochtest_02_ok](Bilder/Mocktest_02_ok.jpg)
+
+![Mochtest_03_ok](Bilder/Mocktest_03_ok.jpg)
 
 ## AUFGABE 9: SELENIUM EINFÜHRUNG
 
+Im Projekt TestSeleniumChatGPT wurde ein einfacher Selenium Test erstellt.
+Zun#chst wird in der Methode 'setUp()' eine neue Firefox-Instanz mithilfe eines 'geckodriver.exe' erstellt. Im eigentlichen Test wird dann die gewünschte Seite aufgerufen und die Cookies über den Banner bestätigt. Als nächstes wird das Suchfeld gesucht und mit dem Suchtext befüllt. Nachdem auf die Ergebnisse gewartet wurde, werden diese nach einem bestimmten Element durchsucht - in diesem befinden sich die Suchergebnisse. Diese werden anschließend mit einer ForEach-Schleife nach dem gewünschten Wort durchsucht und das Ergebnis wird ausgegeben.
+
+````java
+public class MySeleniumTest {
+    // Instanzvariable für den WebDriver, die zum Steuern des Browsers verwendet wird
+    private WebDriver driver;
+
+    // Set-Up-Methode, die vor jedem Test ausgeführt wird
+    @Before
+    public void setUp() {
+        // Setzen des Pfades zum GeckoDriver, der für Firefox erforderlich ist
+        System.setProperty("webdriver.gecko.driver", "geckodriver.exe");
+        // Erstellen einer neuen FirefoxDriver-Instanz
+        driver = new FirefoxDriver();
+    }
+
+    // Testmethode, die die Google-Suche testet
+    @Test
+    public void testSearch() {
+        // Öffnen der Google-Website
+        driver.get("https://www.google.com");
+        // Akzeptieren von Cookies auf der Google-Website
+        acceptGoogleCookies(driver);
+
+        // Suchfeld auf der Google-Website suchen und Text eingeben
+        WebElement searchBox = driver.findElement(By.name("q"));
+        searchBox.sendKeys("Selenium");
+        // Absenden des Suchformulars
+        searchBox.submit();
+
+        // Warten, bis die Suchergebnisse geladen sind
+        WebDriverWait wait = new WebDriverWait(driver, 10);
+        wait.until(ExpectedConditions.presenceOfElementLocated(By.cssSelector(".g")));
+
+        // Überprüfen der Suchergebnisse
+        List<WebElement> searchResults = driver.findElements(By.cssSelector(".g"));
+        boolean seleniumFound = false;
+
+        // Durchlaufen der Suchergebnisse und Überprüfen, ob "Selenium" im Text enthalten ist
+        for (WebElement result : searchResults) {
+            if (result.getText().toLowerCase().contains("selenium")) {
+                seleniumFound = true;
+                break;
+            }
+        }
+
+        // Bestätigen, dass mindestens ein Suchergebnis "Selenium" enthält
+        assertTrue("Selenium not found in search results.", seleniumFound);
+    }
+
+    // Hilfsmethode zum Akzeptieren von Cookies auf der Google-Website
+    public void acceptGoogleCookies(WebDriver driver) {
+        try {
+            // Warten auf das Cookie-Banner, falls es vorhanden ist
+            Thread.sleep(2000);
+            WebElement cookieBanner = driver.findElement(By.id("CXQnmb"));
+            // Klicken auf den "Ich stimme zu"-Button, um Cookies zu akzeptieren
+            WebElement acceptButton = cookieBanner.findElement(By.id("L2AGLb"));
+            acceptButton.click();
+        } catch (TimeoutException e) {
+            System.out.println("Cookie banner not found. Proceeding without accepting cookies.");
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    // Tear-Down-Methode, die nach jedem Test ausgeführt wird
+    @After
+    public void tearDown() {
+        // Schließen des Browsers und Beenden des WebDriver
+        driver.quit();
+    }
+}
+````
+
+![Selenium_01_ok](Bilder/Selenium_01_ok.jpg)
 
 ## AUFGABE 10: TDD IST DEAD
 
+### Warum TDD (Test Driven Development) überbewertet ist!
+
+Der Sprecher geht zunächst auf drei wesentliche Punkte von TDD ein:
+
+- Nicht gut strukturierter Code ist schwer zu testen.
+- Code entsteht nur dann, wenn es einen fehlschlagenden Test gibt.
+- Für jede Codezeile gibt es einen Test, der diese begründet.
+- Sehr hohe Testabdeckung - dadurch kann der Code gut aufgeräumt werden (Red-Green-Refactoring) 
+Wendet man TDD an, so entsteht, nach guter Einarbeitung, viel sauberer und strukturierterer Code, als wenn man nach Büchern wie CleanCode, DesignPatterns o.Ä. codet. Bedingung für TDD: ich weiß genau, auf welches Ziel ich hinarbeite. Ich muss zunächst genau überlegen, was meine Funktion können soll, ob diese einen eindeutigen Rückgabetyp hat, ob sie Parameter entgegennimmt und ob es sein kann, dass z.B. eine Validierungsfunktion bei positiver Validierung einen Boolean zurück gibt und bei negativer eine Exception wirft. Wenn man Tests schreibt, muss man sich genau über solche Dinge aber auch Bezeichnung o.Ä. gedanken machen. Wenn ich aber noch nicht weiß, wie die Signatur der Funktion/en aussehen oder ich noch gar nicht genau verstehe, welches Problem ich eigentlich lösen muss, ist vor allem TDD nicht sinnvoll. Man würde dann denken, dass man einfach klein beginnt - sich Stück für Stück weiterarbeitet. Man könnte meinen, dass TDD dafür perfekt ist, da man dort ja auch mit kleinen Funktionen beginnt, immer wieder Tests schreibt und danach aufräumt. Aber diese Annahme ist falsch. Wenn man den Code andauernd Refactorn muss, so muss auch dauernd der Test refactored werden. Fügt man z.B. bei einer Methode einen zusätzlichen Parameter hinzu, so kann es passieren, dass man einige 100 Tests ebenfalls nachbessern muss, da diese die Methode verwenden könnten. Dies kann einige Zeit in Anspruch nehmen. Außerdem kann es passieren, dass man anschließend bemerkt, dass der neue Parameter doch nicht notwendig gewesen wäre, da es eine viel elegantere Lösung gibt, dann war das Refactoring umsonst. TDD ist also an dieser Stelle nicht hilfreich. Bis ich ein Problem noch nicht richtig verstanden habe, sollte ich Tests erstmal weglassen und versuchen, das Problem zu 100% zu verstehen und den Code ohne Tests zu entwickeln. Zumindest bis zu diesem Punkt, bis man einen Lösungsansatz gefunden hat und das Problem verstanden hat. Wenn man dann einen Lösungsansatz gefunden hat, sollte man den Code verwerfen und noch einmal von 0 beginnen - dieses mal mit der Verwendung von Tests. Das erfordert Disziplin - die aber sowieso für das Arbeiten mit TDD vorhanden sein soll. 
+Niedrige Kopplung und hohe Kohäsion sind wichtig für gut Strukturierten Code und die Anwendung von TDD. Gut strukurierter Code kann auch ohne TDD entstehen, wenn man z.B. das SOLID-Prinzip verstanden hat und weiß, wie man es einbaut. TDD ist hilfreich, diese Struktur zu lernen. 
+Neue Entwickler:innen sollten sich intensiv mit TDD auseinandersetzen, um zu lernen, wie man gut strukturierten und Qualitativ hochwertigen Code schreibt. Wenn man schon länger Erfahrung hat, kann man auch, wenn das Problem noch nicht ganz klar ist, Code ohne Tests entwickeln, da man ja weiß, wie dieser Code aufgebaut sein muss, um diesen gut testen zu können. 
+
+### TDD Revisited 
+
+Es gibt mehrere Ansätze, wie man Tests durchführen kann/soll. Zwei dieser Ansätze werden nun beschrieben:
+
+- Entwickler schreiben ihre eigenen Unit-Tests - In der Praxis der TDD schreiben Entwickler zuerst Unit-Tests für ihre Funktionen oder Methoden, bevor sie den eigentlichen Code schreiben. Diese Tests beschreiben das erwartete Verhalten der Funktion oder Methode. Indem Entwickler zuerst die Tests schreiben und sie dann den eigentlichen Code entwickeln, um den Test zu bestehen, stellen sie sicher, dass der Code korrekt und fehlerfrei ist. Einige Entwickler sind der Meinung, dass das Schreiben von Unit-Tests von jemand anderem als dem Entwickler selbst durchgeführt werden sollte, um eine unvoreingenommene Sichtweise zu gewährleisten. In der TDD-Praxis ist es jedoch üblich, dass Entwickler ihre eigenen Tests schreiben, um ihre Funktionen oder Methoden kontinuierlich zu überprüfen und zu verbessern.
+
+- Test After ist genauso effektiv wie Test First - "Test After" ist ein Ansatz, bei dem der Entwickler zunächst den Code schreibt und anschließend die Tests erstellt. Im Gegensatz dazu steht der "Test First"-Ansatz, bei dem die Tests vor der Implementierung des Codes geschrieben werden. Die Idee hinter "Test First" besteht darin, dass Entwickler den Code mit den Tests im Hinterkopf schreiben, was zu einem saubereren und weniger fehleranfälligen Code führt. "Test After" kann in einigen Fällen effektiv sein, aber der "Test First"-Ansatz hat den Vorteil, dass er dazu beiträgt, dass der Code von Anfang an auf Qualität und Fehlerfreiheit ausgerichtet ist. Es gibt auch eine stärkere Betonung der Anforderungen und Spezifikationen, bevor der Code geschrieben wird, was zu einer besseren Gesamtstruktur und Modularität führt.
+
+### TDD is Dead?
+
+Die Seite "Is TDD Dead?" auf martinfowler.com befasst sich mit der Frage, ob Test-Driven Development (TDD) als Entwicklungspraxis an Relevanz verloren hat. Der Artikel fasst eine Reihe von Diskussionen zwischen drei renommierten Entwicklern und Experten auf diesem Gebiet zusammen: Martin Fowler, Kent Beck und David Heinemeier Hansson. Die Diskussionen wurden in Form von sechs Video-Debatten durchgeführt, in denen sie verschiedene Aspekte von TDD und seine Bedeutung für die moderne Softwareentwicklung erörtern.
+
+Im Verlauf der Diskussionen werden verschiedene Themen behandelt, darunter:
+
+1. Bedeutung von Tests: Die Autoren stimmen darin überein, dass Tests für die Softwareentwicklung unerlässlich sind, um die Qualität des Codes und die Funktionalität des Systems zu gewährleisten. Sie betonen jedoch, dass der Umfang und die Art der Tests je nach Projekt und Kontext variieren können.
+
+2. Rolle von Entwicklern beim Schreiben von Tests: Die Autoren diskutieren die Bedeutung der Entwicklerbeteiligung beim Schreiben von Tests und wie diese Tests dazu beitragen, den Entwicklungsprozess zu verbessern und die Qualität des Codes zu erhöhen.
+
+3. Unit-Tests vs. Integrationstests: Die Diskussion dreht sich auch um die Vor- und Nachteile von Unit-Tests im Vergleich zu Integrationstests. Während Unit-Tests einzelne Komponenten des Systems isoliert prüfen, testen Integrationstests die Interaktion zwischen Komponenten. Beide Testarten haben ihren Platz in der Softwareentwicklung, und die Autoren betonen die Notwendigkeit, den richtigen Mix zu finden, der für das jeweilige Projekt am besten geeignet ist.
+
+4. TDD-Ansätze und ihre Anwendung: Die Diskussion berührt verschiedene Ansätze von TDD, wie z.B. Test First, Test After und Test Last. Die Autoren sind sich einig, dass der richtige Ansatz vom jeweiligen Projekt und den spezifischen Anforderungen abhängt.
+
+5. Integration von TDD in den Entwicklungsprozess: Die Autoren erörtern, wie TDD am besten in den Entwicklungsprozess integriert werden kann, und wie es in Kombination mit anderen Praktiken wie Continuous Integration und Continuous Delivery verwendet werden kann, um den Entwicklungsprozess zu optimieren.
+
+Während die Diskussionen keine endgültige Antwort auf die Frage geben, ob TDD tot ist, stellen sie fest, dass TDD weiterhin ein wertvolles Werkzeug für Entwickler ist, solange es angemessen eingesetzt wird. Die Autoren betonen, dass der richtige Ansatz für TDD vom Kontext und den spezifischen Anforderungen des Projekts abhängt. Insgesamt sind sie sich einig, dass TDD eine bewährte Methode zur Verbesserung der Codequalität ist und Entwickler ermutigt, sich auf die Anforderungen und das Verhalten ihres Systems zu konzentrieren.
